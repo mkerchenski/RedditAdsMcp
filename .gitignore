@@ -20,6 +20,10 @@ launchSettings.json
 ## OS
 .DS_Store
 
+## Tools
+mcp-publisher.exe
+.mcpregistry_*
+
 ## Secrets
 appsettings.local.json
 .env
