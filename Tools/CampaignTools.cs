@@ -19,7 +19,7 @@ public static class CampaignTools
     {
         string id = client.ResolveAccountId(accountId);
         using JsonDocument doc = await client.GetAsync($"/accounts/{id}/campaigns", ct);
-        return FormatJson(doc);
+        return JsonHelper.Format(doc);
     }
 
     [McpServerTool, Description(
@@ -39,7 +39,7 @@ public static class CampaignTools
             path += $"?campaign_id={campaignId}";
 
         using JsonDocument doc = await client.GetAsync(path, ct);
-        return FormatJson(doc);
+        return JsonHelper.Format(doc);
     }
 
     [McpServerTool, Description(
@@ -59,9 +59,6 @@ public static class CampaignTools
             path += $"?ad_group_id={adGroupId}";
 
         using JsonDocument doc = await client.GetAsync(path, ct);
-        return FormatJson(doc);
+        return JsonHelper.Format(doc);
     }
-
-    private static string FormatJson(JsonDocument doc) =>
-        JsonSerializer.Serialize(doc.RootElement, new JsonSerializerOptions { WriteIndented = true });
 }

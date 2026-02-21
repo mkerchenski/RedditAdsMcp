@@ -43,7 +43,7 @@ public static class ReportTools
         };
 
         using JsonDocument doc = await client.PostAsync($"/accounts/{id}/reports", request, ct);
-        return FormatJson(doc);
+        return JsonHelper.Format(doc);
     }
 
     [McpServerTool, Description(
@@ -64,7 +64,4 @@ public static class ReportTools
             client, startDate, endDate, accountId,
             level: "CAMPAIGN", ct: ct);
     }
-
-    private static string FormatJson(JsonDocument doc) =>
-        JsonSerializer.Serialize(doc.RootElement, new JsonSerializerOptions { WriteIndented = true });
 }

@@ -12,9 +12,6 @@ public static class AccountTools
     public static async Task<string> ListAccounts(RedditAdsClient client, CancellationToken ct)
     {
         using JsonDocument doc = await client.GetAsync("/accounts", ct);
-        return FormatJson(doc);
+        return JsonHelper.Format(doc);
     }
-
-    private static string FormatJson(JsonDocument doc) =>
-        JsonSerializer.Serialize(doc.RootElement, new JsonSerializerOptions { WriteIndented = true });
 }
