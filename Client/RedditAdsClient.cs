@@ -6,10 +6,6 @@ using RedditAdsMcp.Auth;
 
 namespace RedditAdsMcp.Client;
 
-/// <summary>
-/// Thin HTTP wrapper for the Reddit Ads API v3.
-/// Injects bearer token from RedditAuthService on every request.
-/// </summary>
 public sealed class RedditAdsClient
 {
     private const string BaseUrl = "https://ads-api.reddit.com/api/v3/";
@@ -32,7 +28,6 @@ public sealed class RedditAdsClient
         _http.DefaultRequestHeaders.UserAgent.ParseAdd("reddit-ads-mcp-csharp/1.0");
     }
 
-    /// <summary>Resolve accountId with fallback to the default from env.</summary>
     public string ResolveAccountId(string? accountId) =>
         accountId ?? _auth.DefaultAccountId;
 

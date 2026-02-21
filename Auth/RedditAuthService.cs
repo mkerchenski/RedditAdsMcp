@@ -5,18 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace RedditAdsMcp.Auth;
 
-/// <summary>
-/// Manages Reddit OAuth 2.0 token lifecycle with automatic refresh.
-/// Reads credentials from environment variables:
-///   REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_REFRESH_TOKEN, REDDIT_ACCOUNT_ID
-/// </summary>
 public sealed class RedditAuthService
 {
     private const string TokenUrl = "https://www.reddit.com/api/v1/access_token";
     private static readonly TimeSpan RefreshBuffer = TimeSpan.FromSeconds(60);
 
     private readonly ILogger<RedditAuthService> _logger;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _clientId;
     private readonly string _clientSecret;
     private readonly string _refreshToken;
@@ -27,16 +22,14 @@ public sealed class RedditAuthService
 
     public string DefaultAccountId { get; }
 
-    public RedditAuthService(ILogger<RedditAuthService> logger)
+    public RedditAuthService(ILogger<RedditAuthService> logger, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
         _clientId = GetRequiredEnv("REDDIT_CLIENT_ID");
         _clientSecret = GetRequiredEnv("REDDIT_CLIENT_SECRET");
         _refreshToken = GetRequiredEnv("REDDIT_REFRESH_TOKEN");
         DefaultAccountId = GetRequiredEnv("REDDIT_ACCOUNT_ID");
-
-        _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("reddit-ads-mcp-csharp/1.0");
     }
 
     public async Task<string> GetAccessTokenAsync(CancellationToken ct = default)
@@ -57,6 +50,8 @@ public sealed class RedditAuthService
             string credentials = Convert.ToBase64String(
                 Encoding.ASCII.GetBytes($"{_clientId}:{_clientSecret}"));
 
+            using var httpClient = _httpClientFactory.CreateClient("RedditAuth");
+
             var request = new HttpRequestMessage(HttpMethod.Post, TokenUrl);
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
             request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -65,7 +60,7 @@ public sealed class RedditAuthService
                 ["refresh_token"] = _refreshToken
             });
 
-            HttpResponseMessage response = await _httpClient.SendAsync(request, ct);
+            HttpResponseMessage response = await httpClient.SendAsync(request, ct);
             response.EnsureSuccessStatusCode();
 
             using JsonDocument doc = await JsonDocument.ParseAsync(

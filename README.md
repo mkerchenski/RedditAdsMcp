@@ -1,5 +1,8 @@
 # RedditAdsMcp
 
+[![NuGet](https://img.shields.io/nuget/v/RedditAdsMcp)](https://www.nuget.org/packages/RedditAdsMcp)
+[![Build](https://github.com/mkerchenski/RedditAdsMcp/actions/workflows/lint.yml/badge.svg)](https://github.com/mkerchenski/RedditAdsMcp/actions/workflows/lint.yml)
+
 A C# MCP (Model Context Protocol) server for the Reddit Ads API. Provides read-only tools for listing accounts, campaigns, ad groups, ads, and pulling performance reports.
 
 Built with .NET 10 and the official [ModelContextProtocol](https://www.nuget.org/packages/ModelContextProtocol/) SDK.
@@ -57,12 +60,10 @@ Then configure Claude Code (see [Step 5a](#5a-configure-claude-code-from-source)
 | **About url** | `https://github.com/mkerchenski/RedditAdsMcp` (or leave blank) |
 | **Redirect URI** | `https://hurrah.dev/oauth/reddit` |
 
-Reddit requires a public HTTPS redirect URI (localhost won't work). The URL above is a free callback page that displays the authorization code for you to copy — no server setup required.
+Reddit requires a public HTTPS redirect URI (localhost won't work). The URL above is a simple callback page maintained by the package author that displays the authorization code for you to copy — it does not store any data. You can use any HTTPS URL you control instead; just update the redirect URI in Steps 2–3 to match.
 
 4. Click **Create app**
 5. Copy your **App ID** and **Secret** — you'll need both in the next steps
-
-> **Using your own redirect URI?** You can use any HTTPS URL you control instead — just update the URLs in Steps 2–3 to match.
 
 ### 2. Authorize the App
 

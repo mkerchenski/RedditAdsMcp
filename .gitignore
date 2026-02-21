@@ -7,11 +7,18 @@ obj/
 *.dll
 *.exe
 *.pdb
+*.nupkg
+nupkg/
+TestResults/
 
 ## IDE
 .vs/
 .vscode/
 *.swp
+launchSettings.json
+
+## OS
+.DS_Store
 
 ## Secrets
 appsettings.local.json

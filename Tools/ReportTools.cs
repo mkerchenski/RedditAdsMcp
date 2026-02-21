@@ -22,7 +22,7 @@ public static class ReportTools
         string startDate,
         [Description("End date in YYYY-MM-DD format")]
         string endDate,
-        [Description("Reddit ad account ID (optional)")]
+        [Description("Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)")]
         string? accountId = null,
         [Description("Fields to include (e.g. IMPRESSIONS, CLICKS, SPEND, CTR, CPC, ECPM). Defaults to all common fields.")]
         string[]? fields = null,
@@ -46,10 +46,11 @@ public static class ReportTools
 
     [McpServerTool, Description(
         "Get daily performance for the last N days (default 7). " +
-        "Convenience wrapper that returns impressions, clicks, spend, CTR, CPC, eCPM by date.")]
+        "Convenience wrapper that returns impressions, clicks, spend, CTR, CPC, eCPM " +
+        "broken down by DATE and CAMPAIGN_ID.")]
     public static async Task<string> GetDailyPerformance(
         RedditAdsClient client,
-        [Description("Reddit ad account ID (optional)")]
+        [Description("Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)")]
         string? accountId = null,
         [Description("Number of days to look back (default 7)")]
         int days = 7,

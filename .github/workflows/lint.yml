@@ -9,8 +9,11 @@ on:
 
 jobs:
   format:
-    name: Code style
-    runs-on: windows-latest
+    name: Code style (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     permissions:
       contents: read
 

@@ -27,7 +27,7 @@ public static class CampaignTools
         "If accountId is not provided, uses the default account.")]
     public static async Task<string> ListAdGroups(
         RedditAdsClient client,
-        [Description("Reddit ad account ID (optional)")]
+        [Description("Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)")]
         string? accountId = null,
         [Description("Campaign ID to filter ad groups (optional)")]
         string? campaignId = null,
@@ -47,7 +47,7 @@ public static class CampaignTools
         "If accountId is not provided, uses the default account.")]
     public static async Task<string> ListAds(
         RedditAdsClient client,
-        [Description("Reddit ad account ID (optional)")]
+        [Description("Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)")]
         string? accountId = null,
         [Description("Ad group ID to filter ads (optional)")]
         string? adGroupId = null,

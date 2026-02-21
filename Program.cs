@@ -9,6 +9,8 @@ HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 // MCP uses stdout for protocol wire format — all logs must go to stderr
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
+builder.Services.AddHttpClient("RedditAuth", c =>
+    c.DefaultRequestHeaders.UserAgent.ParseAdd("reddit-ads-mcp-csharp/1.0"));
 builder.Services.AddSingleton<RedditAuthService>();
 builder.Services.AddHttpClient<RedditAdsClient>();
 
