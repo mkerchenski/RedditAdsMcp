@@ -1,0 +1,38 @@
+name: Code Style
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '**/*.cs'
+      - '.editorconfig'
+
+jobs:
+  format:
+    name: Code style
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+          dotnet-quality: 'preview'
+
+      - name: Restore
+        run: dotnet restore RedditAdsMcp.csproj
+
+      - name: Enforce formatting
+        shell: bash
+        run: |
+          dotnet format RedditAdsMcp.csproj --verify-no-changes --severity warn --no-restore || {
+            echo ""
+            echo "::error::Code style violations found. Run locally to fix:"
+            echo "::error::  dotnet format RedditAdsMcp.csproj --severity warn"
+            exit 1
+          }
