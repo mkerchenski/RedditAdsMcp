@@ -1,0 +1,49 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mkerchenski/reddit-ads-mcp",
+  "title": "Reddit Ads MCP",
+  "description": "MCP server for the Reddit Ads API — list accounts, campaigns, ad groups, ads, and pull performance reports.",
+  "version": "1.1.1",
+  "repository": {
+    "url": "https://github.com/mkerchenski/RedditAdsMcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "nuget",
+      "registryBaseUrl": "https://api.nuget.org/v3/index.json",
+      "identifier": "RedditAdsMcp",
+      "version": "1.1.1",
+      "runtimeHint": "dnx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "REDDIT_CLIENT_ID",
+          "description": "Reddit app client ID",
+          "isRequired": true,
+          "isSecret": false
+        },
+        {
+          "name": "REDDIT_CLIENT_SECRET",
+          "description": "Reddit app client secret",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "REDDIT_REFRESH_TOKEN",
+          "description": "OAuth refresh token",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "REDDIT_ACCOUNT_ID",
+          "description": "Default Reddit ad account ID",
+          "isRequired": true,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}

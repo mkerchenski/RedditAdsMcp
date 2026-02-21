@@ -1,3 +1,4 @@
+<!-- mcp-name: io.github.mkerchenski/reddit-ads-mcp -->
 # RedditAdsMcp
 
 [![NuGet](https://img.shields.io/nuget/v/RedditAdsMcp)](https://www.nuget.org/packages/RedditAdsMcp)

@@ -10,7 +10,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>reddit-ads-mcp</ToolCommandName>
     <PackageId>RedditAdsMcp</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>Mike Kerchenski</Authors>
     <Description>MCP server for the Reddit Ads API. Provides tools to list accounts, campaigns, ad groups, ads, and pull performance reports — designed for use with Claude Code and other MCP clients.</Description>
     <PackageProjectUrl>https://github.com/mkerchenski/RedditAdsMcp</PackageProjectUrl>
