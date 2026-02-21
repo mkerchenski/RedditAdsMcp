@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "required": ["REDDIT_CLIENT_ID", "REDDIT_CLIENT_SECRET", "REDDIT_REFRESH_TOKEN", "REDDIT_ACCOUNT_ID"],
+  "properties": {
+    "REDDIT_CLIENT_ID": {
+      "type": "string",
+      "description": "Reddit app client ID"
+    },
+    "REDDIT_CLIENT_SECRET": {
+      "type": "string",
+      "description": "Reddit app client secret"
+    },
+    "REDDIT_REFRESH_TOKEN": {
+      "type": "string",
+      "description": "OAuth refresh token"
+    },
+    "REDDIT_ACCOUNT_ID": {
+      "type": "string",
+      "description": "Default Reddit ad account ID"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "serverInfo": {
+    "name": "reddit-ads-mcp",
+    "version": "1.1.1"
+  },
+  "authentication": {
+    "required": true,
+    "schemes": ["oauth2"]
+  },
+  "tools": [
+    {
+      "name": "ListAccounts",
+      "description": "List all Reddit ad accounts accessible with the current credentials.",
+      "inputSchema": { "type": "object", "properties": {} }
+    },
+    {
+      "name": "ListCampaigns",
+      "description": "List all campaigns for a Reddit ad account.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": { "type": "string", "description": "Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)" }
+        }
+      }
+    },
+    {
+      "name": "ListAdGroups",
+      "description": "List ad groups for a Reddit ad account, optionally filtered by campaign.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": { "type": "string", "description": "Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)" },
+          "campaignId": { "type": "string", "description": "Campaign ID to filter ad groups (optional)" }
+        }
+      }
+    },
+    {
+      "name": "ListAds",
+      "description": "List ads for a Reddit ad account, optionally filtered by ad group.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": { "type": "string", "description": "Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)" },
+          "adGroupId": { "type": "string", "description": "Ad group ID to filter ads (optional)" }
+        }
+      }
+    },
+    {
+      "name": "GetPerformanceReport",
+      "description": "Get a performance report with custom date range, fields, and breakdowns.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["startDate", "endDate"],
+        "properties": {
+          "startDate": { "type": "string", "description": "Start date in YYYY-MM-DD format" },
+          "endDate": { "type": "string", "description": "End date in YYYY-MM-DD format" },
+          "accountId": { "type": "string", "description": "Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)" },
+          "fields": { "type": "array", "items": { "type": "string" }, "description": "Fields to include (e.g. IMPRESSIONS, CLICKS, SPEND)" },
+          "breakdowns": { "type": "array", "items": { "type": "string" }, "description": "Breakdowns for the report (e.g. DATE, CAMPAIGN_ID)" }
+        }
+      }
+    },
+    {
+      "name": "GetDailyPerformance",
+      "description": "Get daily performance for the last N days, broken down by DATE and CAMPAIGN_ID.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accountId": { "type": "string", "description": "Reddit ad account ID (optional, defaults to REDDIT_ACCOUNT_ID env var)" },
+          "days": { "type": "integer", "description": "Number of days to look back (default 7)" }
+        }
+      }
+    }
+  ]
+}
