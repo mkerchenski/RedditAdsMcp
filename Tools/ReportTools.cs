@@ -33,7 +33,7 @@ public static class ReportTools
         CancellationToken ct = default)
     {
         string id = client.ResolveAccountId(accountId);
-        var request = new ReportRequest
+        ReportRequest request = new ReportRequest
         {
             Starts = startDate,
             Ends = endDate,
