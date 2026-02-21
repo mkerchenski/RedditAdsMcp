@@ -19,40 +19,44 @@ All tools accept an optional `accountId` parameter. If omitted, the default acco
 
 ## Prerequisites
 
-1. A Reddit account with access to [Reddit Ads](https://ads.reddit.com)
+1. A Reddit account with an active [Reddit Ads](https://ads.reddit.com) advertiser account
 2. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-3. A Reddit developer app (setup below)
 
 ## Setup
 
-### 1. Create a Reddit App
+### 1. Create a Reddit Ads API App
 
-Go to [reddit.com/prefs/apps](https://www.reddit.com/prefs/apps) and create a new app:
+Go to [ads.reddit.com](https://ads.reddit.com), then navigate to **Developer Applications** in the left sidebar (under your account/business settings). Click **Create a new app** and fill in:
 
-- **Type:** script
-- **Name:** anything (e.g. `reddit-ads-mcp`)
-- **Redirect URI:** `http://localhost:8080`
+- **App name:** a descriptive name for your app
+- **Description:** optional
+- **About url:** optional (e.g. your project's GitHub URL)
+- **Redirect URI:** `https://hurrah.dev/oauth/reddit`
 
-After creating, note your **Client ID** (short string under the app name) and **Client Secret**.
+> **Tip:** You can use your own HTTPS redirect URI instead if you prefer — just update the URLs in the steps below to match.
+
+After creating, note your **Client ID** and **Client Secret**.
 
 ### 2. Get a Refresh Token
 
 **Open this URL in your browser** (replace `YOUR_CLIENT_ID`):
 
 ```
-https://www.reddit.com/api/v1/authorize?client_id=YOUR_CLIENT_ID&response_type=code&state=mcp&redirect_uri=http://localhost:8080&duration=permanent&scope=adsread
+https://www.reddit.com/api/v1/authorize?client_id=YOUR_CLIENT_ID&response_type=code&state=mcp&redirect_uri=https%3A%2F%2Fhurrah.dev%2Foauth%2Freddit&duration=permanent&scope=adsread
 ```
 
-Click **Allow**. Reddit redirects to `http://localhost:8080/?state=mcp&code=AUTHORIZATION_CODE`. Nothing will load — just copy the `code` value from the URL bar.
+Click **Allow**. Reddit redirects to `hurrah.dev/oauth/reddit` which displays your authorization code. Click **Copy**.
 
 **Exchange the code for a refresh token:**
 
 ```bash
 curl -X POST https://www.reddit.com/api/v1/access_token \
   -u "YOUR_CLIENT_ID:YOUR_CLIENT_SECRET" \
-  -A "reddit-ads-mcp/1.0" \
-  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=http://localhost:8080"
+  -A "ads-mcp/1.0" \
+  -d "grant_type=authorization_code&code=AUTHORIZATION_CODE&redirect_uri=https://hurrah.dev/oauth/reddit"
 ```
+
+> **Important:** The `redirect_uri` in the curl command must match exactly what you registered in Step 1.
 
 The response contains your `refresh_token`. Save it — it's permanent until revoked.
 
@@ -65,7 +69,7 @@ Your Reddit Ads account ID is visible in the Reddit Ads dashboard URL: `https://
 Build the project first:
 
 ```bash
-dotnet build --project C:\Users\mkerc\Documents\OpenSource\RedditAdsMcp
+dotnet build
 ```
 
 Add to your Claude Code MCP settings (`~/.claude/settings.json` under `mcpServers`):
@@ -74,7 +78,7 @@ Add to your Claude Code MCP settings (`~/.claude/settings.json` under `mcpServer
 "reddit-ads": {
   "type": "stdio",
   "command": "dotnet",
-  "args": ["run", "--project", "C:\\path\\to\\RedditAdsMcp", "--no-build"],
+  "args": ["run", "--project", "/path/to/RedditAdsMcp", "--no-build"],
   "env": {
     "REDDIT_CLIENT_ID": "your_client_id",
     "REDDIT_CLIENT_SECRET": "your_client_secret",
