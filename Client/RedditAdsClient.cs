@@ -12,7 +12,7 @@ namespace RedditAdsMcp.Client;
 /// </summary>
 public sealed class RedditAdsClient
 {
-    private const string BaseUrl = "https://ads-api.reddit.com/api/v3";
+    private const string BaseUrl = "https://ads-api.reddit.com/api/v3/";
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,

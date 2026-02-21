@@ -12,7 +12,7 @@ Built with .NET 10 and the official [ModelContextProtocol](https://www.nuget.org
 | `ListCampaigns` | List campaigns for an account |
 | `ListAdGroups` | List ad groups, optionally filtered by campaign |
 | `ListAds` | List ads, optionally filtered by ad group |
-| `GetPerformanceReport` | Get a performance report with custom date range, metrics, breakdowns, and level |
+| `GetPerformanceReport` | Get a performance report with custom date range, fields, and breakdowns |
 | `GetDailyPerformance` | Convenience wrapper — last N days of impressions, clicks, spend, CTR, CPC, eCPM |
 
 All tools accept an optional `accountId` parameter. If omitted, the default account from `REDDIT_ACCOUNT_ID` is used.
@@ -21,6 +21,26 @@ All tools accept an optional `accountId` parameter. If omitted, the default acco
 
 1. A Reddit account with an active [Reddit Ads](https://ads.reddit.com) advertiser account
 2. [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+
+## Install
+
+### Option A: Install as a dotnet tool (recommended)
+
+```bash
+dotnet tool install -g RedditAdsMcp
+```
+
+Then configure Claude Code (see [Step 5b](#5b-configure-claude-code-dotnet-tool) below).
+
+### Option B: Clone and build from source
+
+```bash
+git clone https://github.com/mkerchenski/RedditAdsMcp.git
+cd RedditAdsMcp
+dotnet build
+```
+
+Then configure Claude Code (see [Step 5a](#5a-configure-claude-code-from-source) below).
 
 ## Setup
 
@@ -75,21 +95,30 @@ The response JSON contains a `refresh_token` field. Save it — it's permanent u
 2. Select your business on the left — your ad account appears on the right
 3. The account ID is the value under the account name (e.g. `a2_eaf73mplhhps`)
 
-### 5. Configure Claude Code
+### 5a. Configure Claude Code (from source)
 
-Build the project:
-
-```bash
-dotnet build
-```
-
-Add to your Claude Code MCP settings (`~/.claude/settings.json` under `mcpServers`), replacing the four placeholder values:
+Add to your Claude Code MCP settings (`.mcp.json` in your project, or `~/.claude/settings.json`), replacing the four placeholder values:
 
 ```json
 "reddit-ads": {
   "type": "stdio",
   "command": "dotnet",
   "args": ["run", "--project", "/path/to/RedditAdsMcp", "--no-build"],
+  "env": {
+    "REDDIT_CLIENT_ID": "your_app_id",
+    "REDDIT_CLIENT_SECRET": "your_secret",
+    "REDDIT_REFRESH_TOKEN": "your_refresh_token",
+    "REDDIT_ACCOUNT_ID": "your_account_id"
+  }
+}
+```
+
+### 5b. Configure Claude Code (dotnet tool)
+
+```json
+"reddit-ads": {
+  "type": "stdio",
+  "command": "reddit-ads-mcp",
   "env": {
     "REDDIT_CLIENT_ID": "your_app_id",
     "REDDIT_CLIENT_SECRET": "your_secret",
@@ -106,6 +135,7 @@ Verify with `/mcp` in Claude Code — the `reddit-ads` server should appear with
 ```bash
 dotnet build    # compile
 dotnet run      # start MCP server on stdio
+dotnet pack     # create NuGet package
 ```
 
 ## License

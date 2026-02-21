@@ -18,7 +18,7 @@ public static class CampaignTools
         CancellationToken ct = default)
     {
         string id = client.ResolveAccountId(accountId);
-        using JsonDocument doc = await client.GetAsync($"/accounts/{id}/campaigns", ct);
+        using JsonDocument doc = await client.GetAsync($"ad_accounts/{id}/campaigns", ct);
         return JsonHelper.Format(doc);
     }
 
@@ -34,7 +34,7 @@ public static class CampaignTools
         CancellationToken ct = default)
     {
         string id = client.ResolveAccountId(accountId);
-        string path = $"/accounts/{id}/ad_groups";
+        string path = $"ad_accounts/{id}/ad_groups";
         if (campaignId is not null)
             path += $"?campaign_id={campaignId}";
 
@@ -54,7 +54,7 @@ public static class CampaignTools
         CancellationToken ct = default)
     {
         string id = client.ResolveAccountId(accountId);
-        string path = $"/accounts/{id}/ads";
+        string path = $"ad_accounts/{id}/ads";
         if (adGroupId is not null)
             path += $"?ad_group_id={adGroupId}";
 

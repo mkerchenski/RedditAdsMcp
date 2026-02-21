@@ -9,13 +9,13 @@ namespace RedditAdsMcp.Tools;
 [McpServerToolType]
 public static class ReportTools
 {
-    private static readonly string[] DefaultMetrics =
+    private static readonly string[] DefaultFields =
         ["IMPRESSIONS", "CLICKS", "SPEND", "CTR", "CPC", "ECPM"];
 
     [McpServerTool, Description(
         "Get a performance report for a Reddit ad account. " +
-        "Returns metrics like impressions, clicks, spend, CTR, CPC, and eCPM " +
-        "broken down by the specified level and breakdowns.")]
+        "Returns fields like impressions, clicks, spend, CTR, CPC, and eCPM " +
+        "broken down by the specified breakdowns.")]
     public static async Task<string> GetPerformanceReport(
         RedditAdsClient client,
         [Description("Start date in YYYY-MM-DD format")]
@@ -24,25 +24,23 @@ public static class ReportTools
         string endDate,
         [Description("Reddit ad account ID (optional)")]
         string? accountId = null,
-        [Description("Metrics to include (e.g. IMPRESSIONS, CLICKS, SPEND, CTR, CPC, ECPM). Defaults to all common metrics.")]
-        string[]? metrics = null,
-        [Description("Breakdowns for the report (e.g. date, campaign_id, ad_group_id). Defaults to [date].")]
+        [Description("Fields to include (e.g. IMPRESSIONS, CLICKS, SPEND, CTR, CPC, ECPM). Defaults to all common fields.")]
+        string[]? fields = null,
+        [Description("Breakdowns for the report (e.g. DATE, CAMPAIGN_ID, AD_GROUP_ID). Defaults to [DATE].")]
         string[]? breakdowns = null,
-        [Description("Report level: ACCOUNT, CAMPAIGN, AD_GROUP, or AD. Defaults to CAMPAIGN.")]
-        string? level = null,
         CancellationToken ct = default)
     {
         string id = client.ResolveAccountId(accountId);
         ReportRequest request = new()
         {
-            Starts = startDate,
-            Ends = endDate,
-            Level = level ?? "CAMPAIGN",
-            Metrics = metrics ?? DefaultMetrics,
-            Breakdowns = breakdowns ?? ["date"]
+            StartsAt = NormalizeDate(startDate),
+            EndsAt = NormalizeDate(endDate),
+            Fields = fields ?? DefaultFields,
+            Breakdowns = breakdowns ?? ["DATE"]
         };
 
-        using JsonDocument doc = await client.PostAsync($"/accounts/{id}/reports", request, ct);
+        var body = new { data = request };
+        using JsonDocument doc = await client.PostAsync($"ad_accounts/{id}/reports", body, ct);
         return JsonHelper.Format(doc);
     }
 
@@ -62,6 +60,10 @@ public static class ReportTools
 
         return await GetPerformanceReport(
             client, startDate, endDate, accountId,
-            level: "CAMPAIGN", ct: ct);
+            breakdowns: ["DATE", "CAMPAIGN_ID"], ct: ct);
     }
+
+    // v3 API requires ISO 8601 datetime; accept YYYY-MM-DD for convenience
+    private static string NormalizeDate(string date) =>
+        date.Contains('T') ? date : $"{date}T00:00:00Z";
 }

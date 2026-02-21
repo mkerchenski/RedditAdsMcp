@@ -4,18 +4,15 @@ namespace RedditAdsMcp.Models;
 
 public record ReportRequest
 {
-    [JsonPropertyName("starts")]
-    public string Starts { get; init; } = "";
+    [JsonPropertyName("starts_at")]
+    public string StartsAt { get; init; } = "";
 
-    [JsonPropertyName("ends")]
-    public string Ends { get; init; } = "";
+    [JsonPropertyName("ends_at")]
+    public string EndsAt { get; init; } = "";
 
-    [JsonPropertyName("level")]
-    public string Level { get; init; } = "CAMPAIGN";
-
-    [JsonPropertyName("metrics")]
-    public string[] Metrics { get; init; } = ["IMPRESSIONS", "CLICKS", "SPEND", "CTR", "CPC", "ECPM"];
+    [JsonPropertyName("fields")]
+    public string[] Fields { get; init; } = ["IMPRESSIONS", "CLICKS", "SPEND", "CTR", "CPC", "ECPM"];
 
     [JsonPropertyName("breakdowns")]
-    public string[] Breakdowns { get; init; } = ["date"];
+    public string[] Breakdowns { get; init; } = ["DATE"];
 }

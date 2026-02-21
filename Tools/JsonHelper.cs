@@ -8,4 +8,7 @@ internal static class JsonHelper
 
     public static string Format(JsonDocument doc) =>
         JsonSerializer.Serialize(doc.RootElement, IndentedOptions);
+
+    public static string Format(List<JsonElement> elements) =>
+        JsonSerializer.Serialize(elements, IndentedOptions);
 }
